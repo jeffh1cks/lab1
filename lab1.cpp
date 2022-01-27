@@ -253,7 +253,7 @@ void render()
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Draw box.
 	glPushMatrix();
-	glColor3ub(0, 0, 220);
+	glColor3ub(0, 0, 220);  // change to blue color
 	glTranslatef(pos[0], pos[1], 0.0f);
 	glBegin(GL_QUADS);
 		glVertex2f(-w, -w);
