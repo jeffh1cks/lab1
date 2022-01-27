@@ -49,7 +49,11 @@ void init_opengl(void);
 void physics(void);
 void render(void);
 
-
+/* MVC ARCHITECTURE
+	MODEL: objects in the program (square moving around in the window, text)
+	VIEW: (window itself, render function)
+	CONTROLLER (other components, looking for events) 
+*/
 
 //=====================================
 // MAIN FUNCTION IS HERE
