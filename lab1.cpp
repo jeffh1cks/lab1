@@ -1,5 +1,5 @@
 //modified by: Jeff Hicks
-//date: 1/27/22
+//date: 1/27/22 updated 2/3/22
 //
 //author: Gordon Griesel
 //date: Spring 2022
@@ -16,6 +16,9 @@ using namespace std;
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 #include <GL/glx.h>
+#include "log.h"
+#include "fonts.h"
+
 
 
 //some structures
@@ -60,22 +63,27 @@ void render(void);
 //=====================================
 int main()
 {
+    logOpen();
 	init_opengl();
 	//Main loop
 	int done = 0;
 	while (!done) {
 		//Process external events.
 		while (x11.getXPending()) {
+            Log("Xevent.\n");
 			XEvent e = x11.getXNextEvent();
 			x11.check_resize(&e);
 			x11.check_mouse(&e);
 			done = x11.check_keys(&e);
+            Log("done: %i\n", done);
 		}
 		physics();
 		render();
 		x11.swapBuffers();
 		usleep(200);
 	}
+    logClose();
+    cleanup_fonts();
 	return 0;
 }
 
@@ -241,6 +249,13 @@ void init_opengl(void)
 	glOrtho(0, g.xres, 0, g.yres, -1, 1);
 	//Set the screen background color
 	glClearColor(0.1, 0.1, 0.1, 1.0);
+
+    //initialize font
+    glEnable(GL_TEXTURE_2D);
+    initialize_fonts();
+
+
+
 }
 
 void physics()
@@ -253,7 +268,19 @@ void render()
 	static float w = 20.0f;
 	static float dir = 25.0f;
 	static float pos[2] = {0.0f+w, g.yres/2.0f};
-	//
+	
+    //draw text
+
+    Rect r;
+    r.left =10;
+    r.bot = g.yres - 25;
+    r.center = 0;
+    //color red
+    ggprint8b(&r, 0,0x00ff0000 , "Jeff's Project");
+    
+    //
+    
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	//Draw box.
 	glPushMatrix();
